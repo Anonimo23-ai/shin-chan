@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shin Chan - Mundo de Kasukabe</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Comic Sans MS","Trebuchet MS",Arial,sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    color:#222;
+}
+
+/* =========================================================
+   MUNDO / FONDO
+========================================================= */
+
+#mundo{
+    position:fixed;
+    inset:0;
+    z-index:-20;
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #69d7ff 0%,
+            #b9f0ff 58%,
+            #83dc64 58%,
+            #5bbb4d 100%
+        );
+
+    transition:
+        background 1.3s,
+        transform .2s;
+}
+
+/* =========================================================
+   SOL
+========================================================= */
+
+.sol{
+    position:absolute;
+    width:115px;
+    height:115px;
+    right:8%;
+    top:65px;
+
+    border-radius:50%;
+
+    background:#ffe142;
+
+    box-shadow:
+        0 0 25px #fff6a0,
+        0 0 60px rgba(255,225,60,.8),
+        0 0 100px rgba(255,225,60,.4);
+
+    animation:respirarSol 3s ease-in-out infinite alternate;
+
+    transition:1.2s;
+}
+
+@keyframes respirarSol{
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.08);
+    }
+}
+
+/* =========================================================
+   LUNA
+========================================================= */
+
+.luna{
+    position:absolute;
+
+    width:95px;
+    height:95px;
+
+    right:8%;
+    top:70px;
+
+    border-radius:50%;
+
+    background:#fffbd8;
+
+    box-shadow:
+        0 0 25px white,
+        0 0 70px rgba(255,255,255,.6);
+
+    opacity:0;
+
+    transform:translateY(-60px);
+
+    transition:1.2s;
+}
+
+/* =========================================================
+   ESTRELLAS
+========================================================= */
+
+#estrellas{
+    position:absolute;
+    inset:0;
+
+    opacity:0;
+
+    transition:1s;
+}
+
+.estrella{
+    position:absolute;
+
+    width:3px;
+    height:3px;
+
+    border-radius:50%;
+
+    background:white;
+
+    box-shadow:
+        0 0 6px white;
+
+    animation:brillar 1.5s infinite alternate;
+}
+
+@keyframes brillar{
+    from{
+        opacity:.25;
+    }
+
+    to{
+        opacity:1;
+    }
+}
+
+/* =========================================================
+   NUBES
+========================================================= */
+
+.nube{
+    position:absolute;
+
+    width:150px;
+    height:45px;
+
+    border-radius:50px;
+
+    background:white;
+
+    opacity:.85;
+
+    animation:moverNube linear infinite;
+}
+
+.nube::before,
+.nube::after{
+    content:"";
+
+    position:absolute;
+
+    background:white;
+
+    border-radius:50%;
+}
+
+.nube::before{
+    width:70px;
+    height:70px;
+
+    left:25px;
+    top:-32px;
+}
+
+.nube::after{
+    width:82px;
+    height:82px;
+
+    right:18px;
+    top:-42px;
+}
+
+.nube1{
+    top:150px;
+    left:-200px;
+
+    animation-duration:35s;
+}
+
+.nube2{
+    top:310px;
+    left:-300px;
+
+    transform:scale(.65);
+
+    animation-duration:48s;
+}
+
+.nube3{
+    top:430px;
+    left:-250px;
+
+    transform:scale(.85);
+
+    animation-duration:41s;
+}
+
+@keyframes moverNube{
+
+    from{
+        left:-250px;
+    }
+
+    to{
+        left:110%;
+    }
+
+}
+
+/* =========================================================
+   COLINAS
+========================================================= */
+
+.colina{
+    position:absolute;
+
+    width:650px;
+    height:250px;
+
+    border-radius:50%;
+
+    background:#72cc59;
+
+    bottom:-120px;
+}
+
+.colina1{
+    left:-170px;
+}
+
+.colina2{
+    right:-200px;
+
+    width:850px;
+
+    background:#65c451;
+}
+
+/* =========================================================
+   MODO NOCHE
+========================================================= */
+
+body.noche #mundo{
+
+    background:
+        linear-gradient(
+            to bottom,
+            #07122d 0%,
+            #182452 58%,
+            #315136 58%,
+            #203d28 100%
+        );
+}
+
+body.noche .sol{
+    opacity:0;
+
+    transform:
+        translateY(100px)
+        scale(.5);
+}
+
+body.noche .luna{
+    opacity:1;
+
+    transform:translateY(0);
+}
+
+body.noche #estrellas{
+    opacity:1;
+}
+
+body.noche .nube{
+    opacity:.2;
+}
+
+body.noche .colina{
+    filter:brightness(.55);
+}
+
+/* =========================================================
+   CABECERA
+========================================================= */
+
+header{
+    text-align:center;
+
+    padding:
+        35px 20px
+        15px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.titulo{
+
+    font-size:
+        clamp(
+            48px,
+            9vw,
+            100px
+        );
+
+    font-weight:900;
+
+    color:#ff3038;
+
+    letter-spacing:-4px;
+
+    text-shadow:
+        4px 4px 0 white,
+        7px 7px 0 #222;
+
+    animation:
+        moverTitulo
+        1.4s
+        ease-in-out
+        infinite
+        alternate;
+}
+
+@keyframes moverTitulo{
+
+    from{
+        transform:
+            rotate(-1deg)
+            scale(1);
+    }
+
+    to{
+        transform:
+            rotate(1deg)
+            scale(1.025);
+    }
+
+}
+
+.subtitulo{
+
+    display:inline-block;
+
+    margin-top:18px;
+
+    padding:
+        10px
+        25px;
+
+    background:white;
+
+    border:
+        4px solid #222;
+
+    border-radius:30px;
+
+    font-weight:bold;
+
+    box-shadow:
+        6px 7px 0
+        rgba(0,0,0,.18);
+
+    transform:rotate(-1deg);
+}
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.panel{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    padding:22px 15px;
+
+    position:relative;
+
+    z-index:5;
+}
+
+button{
+
+    border:
+        3px solid #222;
+
+    border-radius:25px;
+
+    padding:
+        11px 19px;
+
+    font-family:inherit;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+        4px 5px 0 #222;
+
+    transition:.15s;
+}
+
+button:hover{
+
+    transform:
+        translateY(-4px)
+        rotate(-1deg);
+}
+
+button:active{
+
+    box-shadow:none;
+
+    transform:
+        translate(4px,5px);
+}
+
+.bDia{
+    background:#ffe242;
+}
+
+.bOcurrencia{
+    background:#79e57b;
+}
+
+.bChocobi{
+    background:#e8a55b;
+}
+
+.bFiesta{
+    background:#ff91d3;
+}
+
+.bCaos{
+    background:#ff5263;
+    color:white;
+}
+
+.bNormal{
+    background:white;
+}
+
+/* =========================================================
+   DIÁLOGO
+========================================================= */
+
+.dialogo{
+
+    width:
+        min(
+            750px,
+            88%
+        );
+
+    min-height:100px;
+
+    margin:
+        10px auto
+        45px;
+
+    padding:
+        24px 30px;
+
+    background:white;
+
+    border:
+        5px solid #222;
+
+    border-radius:35px;
+
+    box-shadow:
+        9px 10px 0
+        rgba(0,0,0,.18);
+
+    text-align:center;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    position:relative;
+
+    z-index:5;
+}
+
+.dialogo::after{
+
+    content:"";
+
+    position:absolute;
+
+    bottom:-34px;
+    left:65px;
+
+    border:
+        18px solid transparent;
+
+    border-top-color:#222;
+}
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.contenedor{
+
+    width:
+        min(
+            1400px,
+            94%
+        );
+
+    margin:auto;
+
+    padding-bottom:130px;
+
+    position:relative;
+
+    z-index:4;
+}
+
+.tituloSeccion{
+
+    text-align:center;
+
+    font-size:29px;
+
+    margin:
+        20px 0
+        30px;
+
+    color:#222;
+
+    text-shadow:
+        2px 2px white;
+}
+
+/* =========================================================
+   GALERÍA
+========================================================= */
+
+.galeria{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            1fr
+        );
+
+    gap:25px;
+}
+
+.tarjeta{
+
+    position:relative;
+
+    background:white;
+
+    border:
+        5px solid white;
+
+    border-radius:18px;
+
+    padding:7px;
+
+    cursor:pointer;
+
+    box-shadow:
+        8px 10px 0
+        rgba(0,0,0,.2);
+
+    transition:
+        transform .25s,
+        box-shadow .25s;
+
+    overflow:visible;
+}
+
+.tarjeta:nth-child(odd){
+
+    transform:
+        rotate(-2deg);
+}
+
+.tarjeta:nth-child(even){
+
+    transform:
+        rotate(2deg);
+}
+
+.tarjeta:hover{
+
+    transform:
+        scale(1.09)
+        rotate(0deg);
+
+    box-shadow:
+        12px 15px 0
+        rgba(0,0,0,.18);
+
+    z-index:10;
+}
+
+.tarjeta img{
+
+    width:100%;
+
+    height:210px;
+
+    object-fit:cover;
+
+    display:block;
+
+    border-radius:12px;
+
+    background:#ddd;
+}
+
+.numero{
+
+    position:absolute;
+
+    top:-15px;
+    left:-15px;
+
+    width:43px;
+    height:43px;
+
+    display:grid;
+
+    place-items:center;
+
+    background:#ffe139;
+
+    border:
+        3px solid #222;
+
+    border-radius:50%;
+
+    font-weight:bold;
+
+    z-index:5;
+}
+
+.nombre{
+
+    padding:
+        11px 5px
+        5px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    font-size:15px;
+}
+
+/* =========================================================
+   PERSONAJE CORRIENDO
+========================================================= */
+
+#shin{
+
+    position:fixed;
+
+    bottom:18px;
+    left:-120px;
+
+    z-index:70;
+
+    font-size:70px;
+
+    pointer-events:none;
+
+    filter:
+        drop-shadow(
+            4px 5px 2px
+            rgba(0,0,0,.2)
+        );
+
+    animation:
+        shinCorriendo
+        14s
+        linear
+        infinite;
+}
+
+@keyframes shinCorriendo{
+
+    0%{
+
+        left:-120px;
+
+        transform:
+            scaleX(1)
+            rotate(-4deg);
+    }
+
+    47%{
+
+        left:105%;
+
+        transform:
+            scaleX(1)
+            rotate(4deg);
+    }
+
+    49%{
+
+        left:105%;
+
+        transform:
+            scaleX(-1);
+    }
+
+    97%{
+
+        left:-120px;
+
+        transform:
+            scaleX(-1);
+    }
+
+    100%{
+
+        left:-120px;
+
+        transform:
+            scaleX(1);
+    }
+
+}
+
+/* =========================================================
+   NEVADO
+========================================================= */
+
+#nevado{
+
+    position:fixed;
+
+    right:25px;
+    bottom:20px;
+
+    z-index:75;
+
+    font-size:62px;
+
+    cursor:pointer;
+
+    user-select:none;
+
+    animation:
+        moverNevado
+        1.5s
+        infinite
+        alternate;
+}
+
+@keyframes moverNevado{
+
+    from{
+
+        transform:
+            translateY(0)
+            rotate(-4deg);
+    }
+
+    to{
+
+        transform:
+            translateY(-8px)
+            rotate(4deg);
+    }
+
+}
+
+/* =========================================================
+   OBJETOS CAYENDO
+========================================================= */
+
+.caida{
+
+    position:fixed;
+
+    top:-100px;
+
+    z-index:100;
+
+    pointer-events:none;
+
+    animation:
+        caer
+        linear
+        forwards;
+}
+
+@keyframes caer{
+
+    from{
+
+        transform:
+            translateY(-100px)
+            rotate(0deg);
+
+        opacity:1;
+    }
+
+    to{
+
+        transform:
+            translateY(115vh)
+            rotate(720deg);
+
+        opacity:.7;
+    }
+
+}
+
+/* =========================================================
+   MENSAJE FLOTANTE
+========================================================= */
+
+.mensajeFlotante{
+
+    position:fixed;
+
+    z-index:160;
+
+    max-width:300px;
+
+    padding:
+        11px 17px;
+
+    background:white;
+
+    border:
+        4px solid #222;
+
+    border-radius:22px;
+
+    box-shadow:
+        5px 6px 0
+        rgba(0,0,0,.25);
+
+    font-weight:bold;
+
+    pointer-events:none;
+
+    animation:
+        flotarMensaje
+        3s
+        forwards;
+}
+
+@keyframes flotarMensaje{
+
+    0%{
+
+        opacity:0;
+
+        transform:
+            scale(.3)
+            rotate(-8deg);
+    }
+
+    15%{
+
+        opacity:1;
+
+        transform:
+            scale(1.08)
+            rotate(3deg);
+    }
+
+    70%{
+
+        opacity:1;
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:
+            translateY(-130px)
+            scale(.85)
+            rotate(-4deg);
+    }
+
+}
+
+/* =========================================================
+   EXPLOSIÓN COMIC
+========================================================= */
+
+.explosion{
+
+    position:fixed;
+
+    z-index:170;
+
+    pointer-events:none;
+
+    color:#ff3030;
+
+    font-size:
+        clamp(
+            40px,
+            7vw,
+            75px
+        );
+
+    font-weight:900;
+
+    text-shadow:
+        3px 3px white,
+        6px 6px #222;
+
+    animation:
+        explosion
+        .8s
+        forwards;
+}
+
+@keyframes explosion{
+
+    0%{
+
+        opacity:0;
+
+        transform:
+            scale(.1)
+            rotate(-15deg);
+    }
+
+    35%{
+
+        opacity:1;
+
+        transform:
+            scale(1.4)
+            rotate(7deg);
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:
+            scale(2)
+            rotate(-3deg);
+    }
+
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+#modal{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:300;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            .85
+        );
+
+    backdrop-filter:
+        blur(4px);
+}
+
+.modalCaja{
+
+    position:relative;
+
+    width:
+        min(
+            900px,
+            95%
+        );
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    background:white;
+
+    border:
+        6px solid #222;
+
+    border-radius:25px;
+
+    padding:14px;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.5);
+
+    animation:
+        aparecerModal
+        .35s;
+}
+
+@keyframes aparecerModal{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            scale(.55)
+            rotate(-4deg);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            scale(1)
+            rotate(0deg);
+    }
+
+}
+
+.modalCaja img{
+
+    display:block;
+
+    width:100%;
+
+    max-height:65vh;
+
+    object-fit:contain;
+
+    border-radius:15px;
+
+    background:#eee;
+}
+
+#textoModal{
+
+    padding:
+        16px 10px
+        8px;
+
+    text-align:center;
+
+    font-size:19px;
+
+    font-weight:bold;
+}
+
+.cerrar{
+
+    position:absolute;
+
+    right:12px;
+    top:12px;
+
+    width:45px;
+    height:45px;
+
+    display:grid;
+
+    place-items:center;
+
+    border:
+        4px solid #222;
+
+    border-radius:50%;
+
+    background:#ff474f;
+
+    color:white;
+
+    font-size:25px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    z-index:10;
+
+    box-shadow:
+        3px 4px #222;
+}
+
+/* =========================================================
+   MODO CAOS
+========================================================= */
+
+body.caos .tarjeta{
+
+    animation:
+        temblar
+        .17s
+        infinite
+        alternate;
+}
+
+body.caos .titulo{
+
+    animation:
+        tituloLoco
+        .18s
+        infinite
+        alternate;
+}
+
+body.caos .dialogo{
+
+    animation:
+        dialogoLoco
+        .25s
+        infinite
+        alternate;
+}
+
+@keyframes temblar{
+
+    from{
+
+        transform:
+            translate(-3px,-2px)
+            rotate(-3deg);
+    }
+
+    to{
+
+        transform:
+            translate(3px,2px)
+            rotate(3deg);
+    }
+
+}
+
+@keyframes tituloLoco{
+
+    from{
+
+        transform:
+            translateX(-4px)
+            rotate(-3deg);
+    }
+
+    to{
+
+        transform:
+            translateX(4px)
+            rotate(3deg)
+            scale(1.03);
+    }
+
+}
+
+@keyframes dialogoLoco{
+
+    from{
+
+        transform:
+            rotate(-1deg);
+    }
+
+    to{
+
+        transform:
+            rotate(1deg);
+    }
+
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    position:relative;
+
+    z-index:20;
+
+    padding:
+        35px
+        20px;
+
+    background:#ffe33e;
+
+    border-top:
+        5px solid #222;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    font-size:17px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .galeria{
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+    }
+
+}
+
+@media(max-width:700px){
+
+    .galeria{
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+
+        gap:18px;
+    }
+
+    .tarjeta img{
+
+        height:165px;
+    }
+
+    #shin{
+
+        font-size:52px;
+    }
+
+    #nevado{
+
+        font-size:48px;
+    }
+
+}
+
+@media(max-width:440px){
+
+    .galeria{
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .tarjeta img{
+
+        height:240px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     FONDO
+===================================================== -->
+
+<div id="mundo">
+
+    <div class="sol"></div>
+
+    <div class="luna"></div>
+
+    <div id="estrellas"></div>
+
+    <div class="nube nube1"></div>
+    <div class="nube nube2"></div>
+    <div class="nube nube3"></div>
+
+    <div class="colina colina1"></div>
+    <div class="colina colina2"></div>
+
+</div>
+
+
+<!-- =====================================================
+     CABECERA
+===================================================== -->
+
+<header>
+
+    <div class="titulo">
+        SHIN CHAN
+    </div>
+
+    <div class="subtitulo">
+        😂 Bienvenido al caos de Kasukabe 😂
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     CONTROLES
+===================================================== -->
+
+<div class="panel">
+
+    <button
+        class="bDia"
+        onclick="cambiarDia()">
+
+        ☀️ Día / 🌙 Noche
+
+    </button>
+
+
+    <button
+        class="bOcurrencia"
+        onclick="ocurrencia()">
+
+        😂 Ocurrencia
+
+    </button>
+
+
+    <button
+        class="bChocobi"
+        onclick="chocobi()">
+
+        🍫 Chocobi
+
+    </button>
+
+
+    <button
+        class="bFiesta"
+        onclick="fiesta()">
+
+        🎉 Fiesta
+
+    </button>
+
+
+    <button
+        class="bCaos"
+        onclick="modoCaos()">
+
+        💥 Modo Shin Chan
+
+    </button>
+
+
+    <button
+        class="bNormal"
+        onclick="normal()">
+
+        🔄 Normal
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     DIÁLOGO
+===================================================== -->
+
+<div
+    class="dialogo"
+    id="dialogo">
+
+    Parece un día tranquilo en Kasukabe...
+    pero con Shin Chan eso nunca dura demasiado. 👀
+
+</div>
+
+
+<!-- =====================================================
+     GALERÍA
+===================================================== -->
+
+<main class="contenedor">
+
+    <h2 class="tituloSeccion">
+        📸 Aventuras de Shin Chan
+    </h2>
+
+    <div
+        class="galeria"
+        id="galeria">
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     PERSONAJES
+===================================================== -->
+
+<div id="shin">
+    🏃
+</div>
+
+<div
+    id="nevado"
+    title="Toca a Nevado">
+
+    🐶
+
+</div>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div id="modal">
+
+    <div class="modalCaja">
+
+        <div
+            class="cerrar"
+            onclick="cerrarModal()">
+
+            ×
+
+        </div>
+
+        <img
+            id="imagenModal"
+            src=""
+            alt="Escena de Shin Chan">
+
+        <div id="textoModal">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    🏠 Casa Nohara
+    &nbsp; • &nbsp;
+
+    🐶 Nevado
+    &nbsp; • &nbsp;
+
+    🍫 Chocobi
+    &nbsp; • &nbsp;
+
+    😂 Shin Chan
+    &nbsp; • &nbsp;
+
+    💥 Caos asegurado
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   LAS 10 IMÁGENES JPEG
+========================================================= */
+
+const escenas = [
+
+    {
+        imagen:"1.jpeg",
+        nombre:"Un día tranquilo...",
+        texto:"Todo parecía tranquilo en Kasukabe... demasiado tranquilo. 👀"
+    },
+
+    {
+        imagen:"2.jpeg",
+        nombre:"Aparece Shin Chan",
+        texto:"Shin Chan ha llegado. Oficialmente se acabó la tranquilidad. 😂"
+    },
+
+    {
+        imagen:"3.jpeg",
+        nombre:"El plan maestro",
+        texto:"Shin Chan dice que tiene un plan perfecto. Eso nunca es buena señal. 😎"
+    },
+
+    {
+        imagen:"4.jpeg",
+        nombre:"¡Problemas!",
+        texto:"Misae acaba de descubrir la travesura... ¡CORRE! 🏃💨"
+    },
+
+    {
+        imagen:"5.jpeg",
+        nombre:"Hora del Chocobi",
+        texto:"Se cancelan todos los problemas: Shin Chan encontró Chocobi. 🍫🤩"
+    },
+
+    {
+        imagen:"6.jpeg",
+        nombre:"Nevado al rescate",
+        texto:"Nevado observa la situación... probablemente sea el más responsable de todos. 🐶"
+    },
+
+    {
+        imagen:"7.jpeg",
+        nombre:"Otra ocurrencia",
+        texto:"Esa cara significa que Shin Chan está pensando en algo que definitivamente no debería hacer. 😏"
+    },
+
+    {
+        imagen:"8.jpeg",
+        nombre:"Caos en Kasukabe",
+        texto:"Nivel de caos en Kasukabe: 99%. 💥😂"
+    },
+
+    {
+        imagen:"9.jpeg",
+        nombre:"¿Qué pasó aquí?",
+        texto:"Cinco minutos sin supervisión fueron más que suficientes. 😂"
+    },
+
+    {
+        imagen:"10.jpeg",
+        nombre:"Fin de la aventura",
+        texto:"Kasukabe sobrevivió un día más. Mañana seguramente habrá otra travesura. 🌙"
+    }
+
+];
+
+
+/* =========================================================
+   FRASES
+========================================================= */
+
+const frases = [
+
+    "¡Mamááá! ¡Tengo hambre! 😂",
+
+    "¿Dónde escondieron mis Chocobi? 🍫",
+
+    "Yo no fui... creo. 😇",
+
+    "Mamá parece enfadada... ¡CORRE! 🏃💨",
+
+    "Nevado, tenemos una misión secreta. 🐶",
+
+    "Hoy prometo comportarme bien... JAJAJA. 😏",
+
+    "¿Qué podría salir mal? 🤔",
+
+    "¡Plan maestro activado! 💥",
+
+    "Cinco minutos después... todo salió mal. 😂",
+
+    "Hora de hacer algo completamente innecesario. 😎",
+
+    "Si mamá pregunta, nosotros nunca estuvimos aquí. 👀",
+
+    "Nivel de travesura: 100%. 🔥",
+
+    "Objetivo localizado: CHOCOBI. 🍫",
+
+    "Parecía una buena idea hace diez segundos... 😳",
+
+    "Modo Shin Chan preparándose... 💥",
+
+    "Nevado está preocupado. Eso tampoco es buena señal. 🐶",
+
+    "Hoy será un día completamente normal... claro que sí. 😂",
+
+    "¡El héroe de la justicia ha llegado! 🦸",
+
+    "¿Alguien ha visto a mamá? 👀",
+
+    "Shin Chan acaba de tener una idea. Kasukabe tiembla. 😂",
+
+    "No parece una travesura si nadie nos descubre. 😎",
+
+    "¡Necesito Chocobi inmediatamente! 🍫",
+
+    "Nevado... tú no viste nada. 🐶👀"
+
+];
+
+
+/* =========================================================
+   CREAR GALERÍA
+========================================================= */
+
+const galeria =
+    document.getElementById("galeria");
+
+
+escenas.forEach(
+    (escena,indice)=>{
+
+        const tarjeta =
+            document.createElement("div");
+
+        tarjeta.className =
+            "tarjeta";
+
+        tarjeta.innerHTML = `
+
+            <div class="numero">
+                ${indice + 1}
+            </div>
+
+            <img
+                src="${escena.imagen}"
+                alt="Escena ${indice + 1}"
+            >
+
+            <div class="nombre">
+                ${escena.nombre}
+            </div>
+
+        `;
+
+
+        tarjeta.addEventListener(
+            "click",
+            function(event){
+
+                abrirEscena(indice);
+
+                crearMensaje(
+                    event.clientX,
+                    event.clientY,
+                    fraseAleatoria()
+                );
+
+            }
+        );
+
+
+        galeria.appendChild(
+            tarjeta
+        );
+
+    }
+);
+
+
+/* =========================================================
+   FRASE ALEATORIA
+========================================================= */
+
+function fraseAleatoria(){
+
+    return frases[
+        Math.floor(
+            Math.random()
+            *
+            frases.length
+        )
+    ];
+
+}
+
+
+/* =========================================================
+   OCURRENCIA
+========================================================= */
+
+const dialogo =
+    document.getElementById(
+        "dialogo"
+    );
+
+
+function ocurrencia(){
+
+    dialogo.innerHTML =
+        fraseAleatoria();
+
+
+    dialogo.animate(
+
+        [
+
+            {
+                transform:
+                    "scale(.75) rotate(-3deg)"
+            },
+
+            {
+                transform:
+                    "scale(1.08) rotate(2deg)"
+            },
+
+            {
+                transform:
+                    "scale(1) rotate(0deg)"
+            }
+
+        ],
+
+        {
+
+            duration:450,
+
+            easing:"ease-out"
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   ABRIR IMAGEN
+========================================================= */
+
+function abrirEscena(indice){
+
+    const escena =
+        escenas[indice];
+
+
+    const modal =
+        document.getElementById(
+            "modal"
+        );
+
+
+    const imagen =
+        document.getElementById(
+            "imagenModal"
+        );
+
+
+    const texto =
+        document.getElementById(
+            "textoModal"
+        );
+
+
+    imagen.src =
+        escena.imagen;
+
+
+    texto.innerHTML =
+        escena.texto;
+
+
+    modal.style.display =
+        "flex";
+
+
+    explosion();
+
+}
+
+
+/* =========================================================
+   CERRAR IMAGEN
+========================================================= */
+
+function cerrarModal(){
+
+    document.getElementById(
+        "modal"
+    ).style.display =
+        "none";
+
+}
+
+
+/* CERRAR AL TOCAR FUERA */
+
+document.getElementById(
+    "modal"
+).addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target.id
+            ===
+            "modal"
+        ){
+
+            cerrarModal();
+
+        }
+
+    }
+);
+
+
+/* CERRAR CON ESC */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key
+            ===
+            "Escape"
+        ){
+
+            cerrarModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DÍA / NOCHE
+========================================================= */
+
+function cambiarDia(){
+
+    document.body.classList.toggle(
+        "noche"
+    );
+
+
+    if(
+        document.body.classList.contains(
+            "noche"
+        )
+    ){
+
+        dialogo.innerHTML =
+            "🌙 Llegó la noche en Kasukabe... pero Shin Chan todavía tiene energía. 👀";
+
+    }
+
+    else{
+
+        dialogo.innerHTML =
+            "☀️ ¡Buenos días, Kasukabe! ¿Qué podría salir mal hoy? 😂";
+
+    }
+
+}
+
+
+/* =========================================================
+   CHOCOBI
+========================================================= */
+
+function chocobi(){
+
+    dialogo.innerHTML =
+        "🍫 ¡¡¡CHOCOBIIII!!! 🤩";
+
+
+    lluvia(
+
+        32,
+
+        [
+            "🍫",
+            "🍫",
+            "🍫",
+            "⭐",
+            "🍪",
+            "✨"
+        ]
+
+    );
+
+
+    explosion();
+
+}
+
+
+/* =========================================================
+   FIESTA
+========================================================= */
+
+function fiesta(){
+
+    dialogo.innerHTML =
+        "🎉 ¡¡FIESTA EN CASA DE LOS NOHARA!! 😂";
+
+
+    lluvia(
+
+        55,
+
+        [
+            "🎉",
+            "🎊",
+            "⭐",
+            "😂",
+            "🍫",
+            "🐶",
+            "✨",
+            "❤️"
+        ]
+
+    );
+
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        setTimeout(
+            explosion,
+            i*250
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LLUVIA DE OBJETOS
+========================================================= */
+
+function lluvia(
+    cantidad,
+    lista
+){
+
+    for(
+        let i=0;
+        i<cantidad;
+        i++
+    ){
+
+        setTimeout(
+            ()=>{
+
+                const objeto =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                objeto.className =
+                    "caida";
+
+
+                objeto.innerHTML =
+                    lista[
+                        Math.floor(
+                            Math.random()
+                            *
+                            lista.length
+                        )
+                    ];
+
+
+                objeto.style.left =
+                    Math.random()
+                    *
+                    100
+                    +
+                    "vw";
+
+
+                objeto.style.fontSize =
+                    (
+                        25
+                        +
+                        Math.random()
+                        *
+                        40
+                    )
+                    +
+                    "px";
+
+
+                objeto.style.animationDuration =
+                    (
+                        2.5
+                        +
+                        Math.random()
+                        *
+                        3
+                    )
+                    +
+                    "s";
+
+
+                document.body.appendChild(
+                    objeto
+                );
+
+
+                setTimeout(
+                    ()=>{
+
+                        objeto.remove();
+
+                    },
+                    6000
+                );
+
+            },
+
+            i*35
+
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MENSAJE FLOTANTE
+========================================================= */
+
+function crearMensaje(
+    x,
+    y,
+    texto
+){
+
+    const mensaje =
+        document.createElement(
+            "div"
+        );
+
+
+    mensaje.className =
+        "mensajeFlotante";
+
+
+    mensaje.innerHTML =
+        texto;
+
+
+    const izquierda =
+        Math.min(
+            x,
+            window.innerWidth
+            -
+            320
+        );
+
+
+    mensaje.style.left =
+        Math.max(
+            10,
+            izquierda
+        )
+        +
+        "px";
+
+
+    mensaje.style.top =
+        Math.max(
+            70,
+            y-50
+        )
+        +
+        "px";
+
+
+    document.body.appendChild(
+        mensaje
+    );
+
+
+    setTimeout(
+        ()=>{
+
+            mensaje.remove();
+
+        },
+        3100
+    );
+
+}
+
+
+/* =========================================================
+   EXPLOSIÓN COMIC
+========================================================= */
+
+function explosion(){
+
+    const palabras = [
+
+        "¡BOOM!",
+
+        "¡PUM!",
+
+        "¡WOW!",
+
+        "¡EH?!",
+
+        "¡JAJA!",
+
+        "¡OH!"
+
+    ];
+
+
+    const boom =
+        document.createElement(
+            "div"
+        );
+
+
+    boom.className =
+        "explosion";
+
+
+    boom.innerHTML =
+        palabras[
+            Math.floor(
+                Math.random()
+                *
+                palabras.length
+            )
+        ];
+
+
+    boom.style.left =
+        (
+            20
+            +
+            Math.random()
+            *
+            55
+        )
+        +
+        "vw";
+
+
+    boom.style.top =
+        (
+            20
+            +
+            Math.random()
+            *
+            45
+        )
+        +
+        "vh";
+
+
+    document.body.appendChild(
+        boom
+    );
+
+
+    setTimeout(
+        ()=>{
+
+            boom.remove();
+
+        },
+        850
+    );
+
+}
+
+
+/* =========================================================
+   MODO SHIN CHAN
+========================================================= */
+
+function modoCaos(){
+
+    document.body.classList.toggle(
+        "caos"
+    );
+
+
+    dialogo.innerHTML =
+        "🚨 ¡¡¡MODO SHIN CHAN ACTIVADO!!! 💥😂";
+
+
+    lluvia(
+
+        42,
+
+        [
+            "💥",
+            "😂",
+            "🍫",
+            "🐶",
+            "⭐",
+            "🎉"
+        ]
+
+    );
+
+
+    for(
+        let i=0;
+        i<6;
+        i++
+    ){
+
+        setTimeout(
+            explosion,
+            i*180
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   VOLVER A NORMAL
+========================================================= */
+
+function normal(){
+
+    document.body.classList.remove(
+        "caos"
+    );
+
+
+    dialogo.innerHTML =
+        "Todo volvió a la normalidad... por ahora. 👀";
+
+}
+
+
+/* =========================================================
+   NEVADO
+========================================================= */
+
+document.getElementById(
+    "nevado"
+).addEventListener(
+    "click",
+    function(event){
+
+        const frasesNevado = [
+
+            "¡Guau! 🐶",
+
+            "Nevado está preocupado por la próxima idea de Shin Chan. 😂",
+
+            "Nevado quiere salir a pasear. 🐾",
+
+            "Nevado encontró algo sospechoso... 👀",
+
+            "Nevado definitivamente es el más responsable de esta familia. 😂",
+
+            "Nevado dice que él no participará en esta travesura. 🐶"
+
+        ];
+
+
+        crearMensaje(
+
+            event.clientX-250,
+
+            event.clientY-30,
+
+            frasesNevado[
+                Math.floor(
+                    Math.random()
+                    *
+                    frasesNevado.length
+                )
+            ]
+
+        );
+
+    }
+);
+
+
+/* =========================================================
+   CREAR ESTRELLAS
+========================================================= */
+
+const estrellas =
+    document.getElementById(
+        "estrellas"
+    );
+
+
+for(
+    let i=0;
+    i<75;
+    i++
+){
+
+    const estrella =
+        document.createElement(
+            "div"
+        );
+
+
+    estrella.className =
+        "estrella";
+
+
+    estrella.style.left =
+        Math.random()
+        *
+        100
+        +
+        "%";
+
+
+    estrella.style.top =
+        Math.random()
+        *
+        57
+        +
+        "%";
+
+
+    estrella.style.animationDelay =
+        Math.random()
+        *
+        2
+        +
+        "s";
+
+
+    const escala =
+        .5
+        +
+        Math.random()
+        *
+        1.5;
+
+
+    estrella.style.transform =
+        `scale(${escala})`;
+
+
+    estrellas.appendChild(
+        estrella
+    );
+
+}
+
+
+/* =========================================================
+   OCURRENCIAS AUTOMÁTICAS
+========================================================= */
+
+setInterval(
+    ()=>{
+
+        if(
+            Math.random()
+            >
+            .65
+        ){
+
+            ocurrencia();
+
+        }
+
+    },
+    10000
+);
+
+
+/* =========================================================
+   EFECTO PARALLAX CON MOUSE
+========================================================= */
+
+document.addEventListener(
+    "mousemove",
+    function(event){
+
+        const x =
+            (
+                event.clientX
+                /
+                window.innerWidth
+                -
+                .5
+            )
+            *
+            10;
+
+
+        const y =
+            (
+                event.clientY
+                /
+                window.innerHeight
+                -
+                .5
+            )
+            *
+            7;
+
+
+        document.getElementById(
+            "mundo"
+        ).style.transform =
+            `translate(${x}px,${y}px) scale(1.03)`;
+
+    }
+);
+
+</script>
+
+</body>
+</html>
